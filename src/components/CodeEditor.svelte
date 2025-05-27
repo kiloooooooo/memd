@@ -45,6 +45,13 @@
 		}
 	}
 
+	function getCurrentLine(text: string, cursor: number): [string, number, number] {
+		const lineStart = text.lastIndexOf('\n', cursor - 1) + 1;
+		const nextLF = text.indexOf('\n', cursor);
+		const lineEnd = nextLF < 0 ? text.length : text.indexOf('\n', cursor);
+		return [text.substring(lineStart, lineEnd), lineStart, lineEnd];
+	}
+
 	function handleKeydown(event: KeyboardEvent) {
 		currentSelectionStart = textarea.selectionStart;
 		currentSelectionEnd = textarea.selectionEnd;
@@ -57,8 +64,17 @@
 
 			if (currentSelectionStart === currentSelectionEnd) {
 				// 単一行のインデント
-				code =
-					value.substring(0, currentSelectionStart) + indent + value.substring(currentSelectionEnd);
+				const [currentLine, lineStart, lineEnd] = getCurrentLine(value, currentSelectionStart);
+				// リストであって、何も入力されていない場合は行頭にインデントを付加
+				if (currentLine.match(/^\s*(-|\*|\d+\.)\s+$/)) {
+					const lineStart = value.lastIndexOf('\n', currentSelectionStart - 1) + 1;
+					code = value.substring(0, lineStart) + indent + value.substring(lineStart);
+				} else {
+					code =
+						value.substring(0, currentSelectionStart) +
+						indent +
+						value.substring(currentSelectionEnd);
+				}
 				// カーソル位置を更新
 				requestAnimationFrame(() => {
 					textarea.selectionStart = textarea.selectionEnd = currentSelectionStart + indent.length;
@@ -235,15 +251,14 @@
 			// Enterキー (箇条書き自動継続)
 			event.preventDefault();
 
-			const lineStart = value.lastIndexOf('\n', currentSelectionStart - 1) + 1;
-			const currentLine = value.substring(lineStart, currentSelectionStart);
+			const [currentLine, lineStart, lineEnd] = getCurrentLine(value, currentSelectionStart);
 
 			// 前の行が箇条書きであるかをチェック
 			// - 、* 、+ 、数字. のいずれかに続くスペースを許容
 			const listItemMatch = currentLine.match(/^\s*([-*+]|\d+\.)\s*(.*)$/);
 
 			// コードブロックかどうかチェック
-			const codeBlockMatch = currentLine.match(/^```/);
+			const codeBlockMatch = currentLine.match(/^```.*```/);
 
 			if (listItemMatch) {
 				const listItemPrefix = listItemMatch[1]; // `-`, `1.`, `*` など
@@ -286,12 +301,26 @@
 					textarea.selectionStart = textarea.selectionEnd = currentSelectionStart + 1;
 				});
 			} else {
-				// 通常の改行
-				code =
-					value.substring(0, currentSelectionStart) + '\n' + value.substring(currentSelectionEnd);
-				requestAnimationFrame(() => {
-					textarea.selectionStart = textarea.selectionEnd = currentSelectionStart + 1;
-				});
+				// インデントを維持
+				const indentSpace = currentLine.match(/^\s*/)![0];
+				if (event.shiftKey) {
+					// 下に行を挿入
+					code = value.substring(0, lineEnd) + '\n' + indentSpace + value.substring(lineEnd);
+					requestAnimationFrame(() => {
+						textarea.selectionStart = textarea.selectionEnd = lineEnd + 1;
+					});
+				} else {
+					// 通常の改行
+					code =
+						value.substring(0, currentSelectionStart) +
+						'\n' +
+						indentSpace +
+						value.substring(currentSelectionEnd);
+					requestAnimationFrame(() => {
+						textarea.selectionStart = textarea.selectionEnd =
+							currentSelectionStart + 1 + indentSpace.length;
+					});
+				}
 			}
 		}
 
