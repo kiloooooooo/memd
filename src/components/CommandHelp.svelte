@@ -18,12 +18,6 @@
 	<div class="overlay command-help-overlay" on:keydown={handleKeyDown}>
 		<h4>コマンドヘルプ</h4>
 		<table>
-			<thead>
-				<tr>
-					<th></th>
-					<th></th>
-				</tr>
-			</thead>
 			<tbody>
 				<tr>
 					<td>編集 / プレビュー中:</td>
@@ -31,22 +25,22 @@
 				</tr>
 				<tr>
 					<td>Ctrl + S</td>
-					<td>ファイルを保存する</td>
+					<td>ファイルを保存</td>
 				</tr>
 				<tr>
 					<td>Ctrl + P</td>
-					<td>プレビュー表示を切り替える</td>
+					<td>プレビュー切り替え</td>
 				</tr>
 				<tr>
 					<td>Ctrl + O</td>
 					<td>
-						ファイル一覧を表示/非表示<br />
+						ファイル一覧表<br />
 						(フォルダ選択)
 					</td>
 				</tr>
 				<tr>
 					<td>Ctrl + /</td>
-					<td>このヘルプを表示/非表示</td>
+					<td>ヘルプ表示切り替え</td>
 				</tr>
 				<tr>
 					<td>ファイル一覧表示中:</td>
@@ -66,6 +60,13 @@
 				</tr>
 			</tbody>
 		</table>
+		<h4>ソースコード</h4>
+		<div class="source-repo">
+			<p>
+				本ソフトウェアのソースコードは、<a href="https://github.com/kiloooooooo/memd">GitHub</a
+				>で公開しています。
+			</p>
+		</div>
 	</div>
 {/if}
 
@@ -77,20 +78,19 @@
 		transform: translate(-50%, -50%);
 		background-color: #222;
 		border: 1px solid #555;
-		padding: 20px 0;
+		padding: 20px;
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 		z-index: 100;
 		text-align: start;
 	}
 
 	.command-help-overlay {
-		width: 75%;
+		width: 60%;
 		max-width: 600px;
 	}
 
 	.command-help-overlay h4 {
-		margin-top: 0;
-		margin-left: 20px;
+		/* margin-top: 0; */
 		color: #fff;
 	}
 
@@ -98,11 +98,9 @@
 		width: 100%;
 		border-collapse: collapse;
 		margin-top: 20px;
-		margin-left: 20px;
 		color: #fff;
 	}
 
-	.command-help-overlay th,
 	.command-help-overlay td {
 		/* border: 1px solid #ddd; */
 		/* padding: 10px; */
@@ -110,14 +108,17 @@
 		text-align: left;
 	}
 
-	.command-help-overlay th {
-		/* background-color: #444; */
-		font-weight: bold;
-	}
-
 	.command-help-overlay td:first-child {
 		font-family: monospace;
 		font-weight: bold;
 		white-space: nowrap;
+	}
+
+	.source-repo {
+		color: #fff;
+	}
+
+	.source-repo a {
+		color: #fff;
 	}
 </style>
