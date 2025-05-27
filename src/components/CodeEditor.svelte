@@ -371,7 +371,7 @@
 	}
 
 	.line-numbers {
-		padding: 8px 10px;
+		padding: 8px 8px 75vh 8px;
 		background-color: #555;
 		color: #ccc;
 		text-align: right;
@@ -390,7 +390,7 @@
 	textarea {
 		width: 100%;
 		height: 100%;
-		padding: 8px;
+		padding: 8px 8px 75vh 8px;
 		border: none;
 		outline: none;
 		resize: none;
