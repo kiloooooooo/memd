@@ -173,6 +173,7 @@
 </script>
 
 <div class="file-status-container">
+	<!-- <div></div> -->
 	<div class="file-status">
 		{#if isNewFile}
 			新規ファイル
@@ -185,6 +186,12 @@
 		{:else}
 			<div class="unsaved-marker-placeholder"></div>
 		{/if}
+	</div>
+	<div class="help-shortcut">
+		<span class="help-label">ヘルプ</span>
+		<span class="instruction-key">Ctrl</span>
+		<span class="instruction-key-combination">+</span>
+		<span class="instruction-key">/</span>
 	</div>
 </div>
 {#if showFileList}
@@ -199,7 +206,7 @@
 				{/each}
 			</ul>
 			{#if fileList.length === 0}
-				<p>フォルダ内にファイルが見つかりません。</p>
+				<p class="message">フォルダ内にファイルが見つかりません。</p>
 			{/if}
 			<p class="instructions">↑↓/J/K: 選択, Enter: 開く, Esc: 閉じる</p>
 		</div>
@@ -207,6 +214,25 @@
 {/if}
 
 <style>
+	.help-shortcut {
+		color: #ccc;
+		display: flex;
+		align-items: center;
+		font-size: 0.9em;
+		gap: 8px;
+		padding: 0 16px;
+	}
+
+	.help-label {
+		margin-right: 8px;
+	}
+
+	.instruction-key {
+		background-color: #555;
+		border-radius: 4px;
+		padding: 0 8px;
+	}
+
 	.file-status-container {
 		position: fixed;
 		top: 0;
@@ -214,7 +240,7 @@
 		height: 40px;
 		background-color: #222;
 		display: flex;
-		justify-content: center;
+		justify-content: space-between;
 	}
 
 	.file-status {
@@ -284,6 +310,10 @@
 		background-color: #04395e;
 		border: solid 1px #0078d4;
 		color: #fff;
+	}
+
+	.file-list-overlay .message {
+		margin-left: 20px;
 	}
 
 	.file-list-overlay .instructions {

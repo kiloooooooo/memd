@@ -4,11 +4,14 @@
 	import CodeEditor from '../components/CodeEditor.svelte';
 	import MdPreview from '../components/MdPreview.svelte';
 	import FileOperations from '../components/FileOperations.svelte';
+	import CommandHelp from '../components/CommandHelp.svelte';
 	// marked のようなMarkdownパーサーをインポート（別途インストールが必要）
 	// import { marked } from 'marked';
 
 	let myCode = '';
 	let isPreviewMode = false;
+
+	let showCommandHelp = false;
 
 	// $: hasUnsavedChanges = false;
 
@@ -68,6 +71,12 @@
 			handleTogglePreview(); // 表示切替
 			return; // 他のキーハンドリングに進まない
 		}
+		// Ctrl+Shift+/でヘルプ表示
+		if ((event.ctrlKey || event.metaKey) && event.key === '/') {
+			event.preventDefault();
+			console.log('show command help');
+			showCommandHelp = !showCommandHelp;
+		}
 	}
 
 	// コンポーネントのマウント時にイベントリスナーを追加
@@ -86,6 +95,7 @@
 </script>
 
 <FileOperations onFileOpen={handleFileOpen} markdownCode={myCode} />
+<CommandHelp showHelp={showCommandHelp} />
 {#if isPreviewMode}
 	<MdPreview markdownCode={myCode} />
 {:else}
