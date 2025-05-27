@@ -85,6 +85,18 @@
 		}
 	}
 
+	async function newFile() {
+		if (hasUnsavedChanges && !confirm('未保存の変更があります。続行しますか？')) {
+			return;
+		}
+
+		currentFileHandle = null;
+		isNewFile = true;
+		originalFileContent = '';
+		onFileOpen('');
+		hasUnsavedChanges = false;
+	}
+
 	async function saveFile(forceDialog = false) {
 		if (!('showSaveFilePicker' in window)) {
 			alert('お使いのブラウザは Save File Picker API をサポートしていません。');
@@ -155,6 +167,9 @@
 			}
 			showFileList = !showFileList;
 			selectedFileIndex = -1; // ファイル一覧表示時に選択をリセット
+		} else if ((event.ctrlKey || event.metaKey) && event.key === 'm') {
+			event.preventDefault();
+			newFile();
 		} else if (showFileList) {
 			if (event.key === 'ArrowDown' || event.key.toLowerCase() === 'j') {
 				event.preventDefault();

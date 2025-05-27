@@ -16,6 +16,7 @@
 {#if showHelp}
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div class="overlay command-help-overlay" on:keydown={handleKeyDown}>
+		<pre>memd BETA 1.0.0</pre>
 		<h4>コマンドヘルプ</h4>
 		<table>
 			<tbody>
@@ -37,6 +38,10 @@
 						ファイル一覧表<br />
 						(フォルダ選択)
 					</td>
+				</tr>
+				<tr>
+					<td>Ctrl + M</td>
+					<td> 新規ファイル </td>
 				</tr>
 				<tr>
 					<td>Ctrl + /</td>
@@ -87,10 +92,6 @@
 	.command-help-overlay {
 		width: 60%;
 		max-width: 600px;
-	}
-
-	.command-help-overlay h4 {
-		/* margin-top: 0; */
 		color: #fff;
 	}
 
@@ -98,13 +99,12 @@
 		width: 100%;
 		border-collapse: collapse;
 		margin-top: 20px;
-		color: #fff;
 	}
 
 	.command-help-overlay td {
 		/* border: 1px solid #ddd; */
 		/* padding: 10px; */
-		padding: 8px 0;
+		padding: 4px 0;
 		text-align: left;
 	}
 
@@ -112,10 +112,6 @@
 		font-family: monospace;
 		font-weight: bold;
 		white-space: nowrap;
-	}
-
-	.source-repo {
-		color: #fff;
 	}
 
 	.source-repo a {
